@@ -1,24 +1,24 @@
-# README
+# Culinaire
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description:
+- A web application that allows users to search recipes by ingredients
 
-Things you may want to cover:
+## Requirements:
+- Ruby on Rails
+- React
 
-* Ruby version
+## Features:
+- Searching recipes by ingredient(s)
+- Users can save their favorite recipes
+- Users can post their own recipes
+- Users can post pictures of their food
 
-* System dependencies
+## Future Development:
+- Users can friend other "chefs" and share their custom recipes
+- Users can save their "pantry" and find recipe suggestions based on ingredients on hand
+- A chrome plug-in for recipe searches
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## APIs and Gems:
+- Spoonacular API
+- Yummly API
+- Google vision API
