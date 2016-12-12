@@ -25,6 +25,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'react-rails'
 gem 'pry'
 gem 'pry-byebug'
+gem 'ruby-measurement'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
