@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, :email
 
   has_many :pantries
-  has_many :favorites
-  has_many :favorite_recipes, through: :favorites, source: :recipe
-  has_many :cookables, through: :pantries
-  has_many :ingredients, through: :cookables
+  has_many :ingredients, through: :pantries
+  has_many :foods, through: :ingredients
+  has_many :favorite_recipes
+  has_many :saved_recipes, through: :favorite_recipes, source: :recipe
+  has_many :published_recipes, class_name: Recipe
 end

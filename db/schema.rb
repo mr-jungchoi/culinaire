@@ -15,15 +15,6 @@ ActiveRecord::Schema.define(version: 20161212054420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "cookables", force: :cascade do |t|
-    t.integer  "pantry_id",     null: false
-    t.integer  "ingredient_id", null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.index ["ingredient_id"], name: "index_cookables_on_ingredient_id", using: :btree
-    t.index ["pantry_id"], name: "index_cookables_on_pantry_id", using: :btree
-  end
-
   create_table "favorite_recipes", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.integer  "recipe_id",  null: false
@@ -33,18 +24,29 @@ ActiveRecord::Schema.define(version: 20161212054420) do
     t.index ["user_id"], name: "index_favorite_recipes_on_user_id", using: :btree
   end
 
-  create_table "ingredient_types", force: :cascade do |t|
+  create_table "food_types", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "foods", force: :cascade do |t|
+    t.string   "name",         null: false
+    t.text     "nutrition"
+    t.integer  "food_type_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["food_type_id"], name: "index_foods_on_food_type_id", using: :btree
+  end
+
   create_table "ingredients", force: :cascade do |t|
-    t.string   "name",               null: false
-    t.integer  "ingredient_type_id", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.index ["ingredient_type_id"], name: "index_ingredients_on_ingredient_type_id", using: :btree
+    t.string   "amount"
+    t.integer  "cookable_id", null: false
+    t.integer  "food_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["cookable_id"], name: "index_ingredients_on_cookable_id", using: :btree
+    t.index ["food_id"], name: "index_ingredients_on_food_id", using: :btree
   end
 
   create_table "pantries", force: :cascade do |t|
@@ -56,26 +58,22 @@ ActiveRecord::Schema.define(version: 20161212054420) do
 
   create_table "recipes", force: :cascade do |t|
     t.string   "name",               null: false
-    t.text     "ingredients",        null: false
     t.text     "instructions",       null: false
-    t.integer  "minutes_to_prepare"
+    t.integer  "minutes_to_prepare", null: false
+    t.integer  "user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.index ["user_id"], name: "index_recipes_on_user_id", using: :btree
   end
 
   create_table "sources", force: :cascade do |t|
+    t.string   "source_name"
+    t.string   "source_url"
+    t.string   "spoonacular_id", null: false
     t.integer  "recipe_id",      null: false
-    t.string   "sourcable_type", null: false
-    t.integer  "sourcable_id",   null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.index ["recipe_id"], name: "index_sources_on_recipe_id", using: :btree
-  end
-
-  create_table "spoonaculars", force: :cascade do |t|
-    t.string   "source_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -86,16 +84,11 @@ ActiveRecord::Schema.define(version: 20161212054420) do
     t.datetime "updated_at",      null: false
   end
 
-  create_table "yummlys", force: :cascade do |t|
-    t.string   "source_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_foreign_key "cookables", "ingredients"
-  add_foreign_key "cookables", "pantries"
   add_foreign_key "favorite_recipes", "recipes"
   add_foreign_key "favorite_recipes", "users"
-  add_foreign_key "ingredients", "ingredient_types"
+  add_foreign_key "foods", "food_types"
+  add_foreign_key "ingredients", "foods"
   add_foreign_key "pantries", "users"
+  add_foreign_key "recipes", "users"
+  add_foreign_key "sources", "recipes"
 end
